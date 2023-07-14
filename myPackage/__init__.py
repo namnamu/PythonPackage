@@ -8,5 +8,9 @@ dfhelper:
 
     normal_check: (dataframe)
         데이터프레임이 가지는 모든 컬럼에 대해 정규성을 확인한다.
-      '''
+
+    visualization: (dataframe,str,str[,str])
+        시각화하고 싶은 데이터 프레임과 컬럼 이름을 적는다. 
+        histogram을 이용하고 싶다면 두번째 문자열에 아무 문자열이나 적는다.   
+'''
 print(txt)

@@ -1,6 +1,6 @@
 # PythonPackage
 jupyter pandas 모듈
-<br><br><br><br><br>
+<br><br><br><br>
 
 
 다운받아서 진행 중인 주피터 파일 아래에 삽입.
