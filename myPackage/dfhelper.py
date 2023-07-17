@@ -1,5 +1,5 @@
 def to_number_value(df,add=False):
-    pandas.core.indexes.range.RangeIndex
+    import pandas as pd
     new_df=pd.DataFrame()
     for c in df.columns:
         if df[c].dtype not in ['int64','float']:
@@ -28,6 +28,11 @@ def normal_check(df):
         
 def visualization(df,x_name,y_name,shape='none'):
     import seaborn as sns
+    import plotly.express as px
+    import matplotlib.pyplot as plt
+    plt.rc('font',family='Malgun Gothic')
+    import matplotlib as mpl
+    mpl.rcParams['axes.unicode_minus']=False
     x=df[x_name]
     y=df[y_name]
     if shape=="bar":
@@ -35,18 +40,16 @@ def visualization(df,x_name,y_name,shape='none'):
     elif shape=="line":
         sns.lineplot(df,x=x,y=y)
     elif shape=="pie":
-        import plotly.express as px
         fig=px.pie(df,values=y_name,names=x_name)
         fig.show()
     elif shape=="histo":
         sns.histplot(data=df, x=x_name, kde=True)
         print("히스토그램은 ",x_name,"의 갯수를 표현하는 그래프임.")
     elif shape=="stem":
-        import matplotlib.pyplot as plt
         plt.stem(x,y)
     elif shape=="scatter":
         sns.scatterplot(x=x,y=y)
     elif shape=="box":
         sns.boxenplot(df,x=x_name,y=y_name)
     else:
-        print("bar, line, pie, histo,, stem, scatter, box 중 입력")
+        print("bar, line, pie, histo, stem, scatter, box 중 입력")
