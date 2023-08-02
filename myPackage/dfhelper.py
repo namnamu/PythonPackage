@@ -1,4 +1,4 @@
-from tokenize import cookie_re
+#from tokenize import cookie_re
 
 
 def to_number_value(df,add=False):
