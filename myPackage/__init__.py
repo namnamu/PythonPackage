@@ -23,5 +23,7 @@ dfhelper:
         user_df: 입력할 데이터프레임 이름
         col: x축 컬럼 이름 (다변량그룹명)
         value: y축 vlaue이름 (col기준으로 분류된 이름)
+processing:
+    귀찮음 각 파일 보셈
 '''
 print(txt)
