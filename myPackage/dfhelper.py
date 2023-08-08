@@ -1,6 +1,3 @@
-#from tokenize import cookie_re
-
-
 def to_number_value(df,add=False):
     import pandas as pd
     new_df=pd.DataFrame()
@@ -31,19 +28,21 @@ def normal_check(df):
         
 def visualization(df,x_name,y_name,shape='none'):
     import seaborn as sns
+    import matplotlib as mpl
     import matplotlib.pyplot as plt
     plt.rc('font',family='Malgun Gothic')
-    import matplotlib as mpl
+    import plotly.express as px
+
     mpl.rcParams['axes.unicode_minus']=False
     x=df[x_name]
     y=df[y_name]
+
     if shape=="bar":
         sns.barplot(df,x=x,y=y,color='#FC7F77')
     elif shape=="line":
         sns.lineplot(df,x=x,y=y)
     elif shape=="pie": # 컬럼에 오류가 있으면 에러를 출력하지 않고 빈 화면만 출력한다.
-        import plotly.express as px
-        fig=px.pie(df,values=y_name,names=x_name)
+        fig=px.pie(df,values=y_name,names=x_name)#value=숫자형 names=컬럼형
         fig.show()
     elif shape=="histo":
         sns.histplot(data=df, x=x_name, kde=True)
@@ -54,6 +53,14 @@ def visualization(df,x_name,y_name,shape='none'):
         sns.scatterplot(x=x,y=y)
     elif shape=="box":
         sns.boxenplot(df,x=x_name,y=y_name)
+    elif shape=="countplot": 
+        #bar그룹형 (histo처럼 수를 센다.)
+        sns.countplot(data = df, x = x_name, hue = y_name)
+    elif shape=='displot':
+        #bar와 line이 합쳐진 그래프
+        sns.displot(data = df, x = x_name, kde = True)
+    elif shape=='reg':
+        sns.regplot(data=df, x=x_name,y=y_name,line_kws={"color": "black"})
     else:
         print("bar, line, pie, histo, stem, scatter, box 중 입력")
 

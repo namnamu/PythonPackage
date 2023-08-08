@@ -12,11 +12,10 @@ dfhelper:
 
     visualization: (dataframe,str,str[,str])
         시각화하고 싶은 데이터 프레임과 컬럼 이름을 적는다. 
-        histogram을 이용하고 싶다면 두번째 문자열에 아무 문자열이나 적는다.   
+        histo의 경우 문자열은 동작하지 않는다.   
     
     def many_case_ttest(df_col)
-        리스트로 들어오는 모든 경우의 수를 리그전 형식으로 구한다.
-        df_col: 시리즈
+        시리즈로 들어오는 모든 경우의 수를 리그전 형식으로 구한다
 
     ttest_auto:(user_df,col,value)
         보페로니 교정방식의 다변량 T검정
@@ -24,6 +23,18 @@ dfhelper:
         col: x축 컬럼 이름 (다변량그룹명)
         value: y축 vlaue이름 (col기준으로 분류된 이름)
 processing:
-    귀찮음 각 파일 보셈
+    
+    columns_null(df):
+       결측치를 컬럼 평균으로 전환
+       
+    check_null(df):
+        데이터 프레임 컬럼별 널값 갯수 및 비율 확인
+
+    heatmap(df):
+        상관계수 시각화
+
+    flo_cate(df):
+        데이터프레임을 실수형식과 아닌 것으로 나눔
+
 '''
 print(txt)

@@ -11,7 +11,7 @@ def check_null(df):
     null_cnt_df = pd.DataFrame(df.isnull().sum()).rename(columns = {0:'null_count'}).reset_index()
     null_cnt_df['null_ratio'] = round(null_cnt_df['null_count']/len(df) * 100, 2)
     return null_cnt_df
-# 모델링
+# 상관계수 시각화
 def heatmap(df):
     import matplotlib.pyplot as plt
     import seaborn as sns
@@ -19,7 +19,6 @@ def heatmap(df):
     float_df=df[float_li]
     plt.figure(figsize = (7, 5))
     sns.heatmap(float_df.corr(), annot = True, cmap = 'coolwarm', fmt = '.2f')
-    plt.title('인구 통계학 데이터 - 상관계수')
     plt.show()
 
 # 데이터프레임을 실수형식과 아닌 것으로 나눔
