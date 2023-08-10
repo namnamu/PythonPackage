@@ -56,9 +56,6 @@ def visualization(df,x_name,y_name,shape='none'):
     elif shape=="countplot": 
         #bar그룹형 (histo처럼 수를 센다.)
         sns.countplot(data = df, x = x_name, hue = y_name)
-    elif shape=='displot':
-        #bar와 line이 합쳐진 그래프
-        sns.displot(data = df, x = x_name, kde = True)
     elif shape=='reg':
         sns.regplot(data=df, x=x_name,y=y_name,line_kws={"color": "black"})
     else:
