@@ -38,7 +38,14 @@ def visualization(df,x_name,y_name,shape='none'):
     y=df[y_name]
 
     if shape=="bar":
-        sns.barplot(df,x=x,y=y,color='#FC7F77')
+        bar=plt.bar(x,y)
+        plt.ylim([min(y),max(y)*1.081])
+        # 숫자 넣는 부분
+        for rect in bar:
+            height = rect.get_height()
+            plt.text(rect.get_x() + rect.get_width()/2.0, height, '%.1f' % height, ha='center', va='bottom', size = 12)
+        plt.xlabel(x_name)
+        plt.ylabel(y_name)
     elif shape=="line":
         sns.lineplot(df,x=x,y=y)
     elif shape=="pie": # 컬럼에 오류가 있으면 에러를 출력하지 않고 빈 화면만 출력한다.
