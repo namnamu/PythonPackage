@@ -1,7 +1,4 @@
 # 결측치를 컬럼 평균으로 전환
-from ast import Return
-
-
 def columns_null(df):
     for col in df.columns:
         means=df[col].mean()
@@ -39,20 +36,7 @@ def flo_cate(df):
         else:
             cate_li.append(col)
     return flo_li, cate_li
-
-def scatter3d(df,x,y,z,color):
-    # 시각화
-    import plotly.express as px
-    # 3d그리기
-    fig=px.scatter_3d(df, 
-            x=x, y=y, z=z,
-            color=color, hover_data=[y],
-            # size='' 투명도 조절 가능
-                )
-    # 마커 크기
-    fig.update_traces(marker_size = 5)
-    return fig
-
+# 컬럼형 라벨링(우위관계가 없을 때 사용, 50개가 넘으면 쓰지 말 것.)
 def onehot(array):
     from sklearn.preprocessing import OneHotEncoder
     import numpy as np
