@@ -1,4 +1,7 @@
 # 결측치를 컬럼 평균으로 전환
+from ast import Return
+
+
 def columns_null(df):
     for col in df.columns:
         means=df[col].mean()
@@ -49,3 +52,18 @@ def scatter3d(df,x,y,z,color):
     # 마커 크기
     fig.update_traces(marker_size = 5)
     return fig
+
+def onehot(array):
+    from sklearn.preprocessing import OneHotEncoder
+    import numpy as np
+
+    np_array = np.array(array).reshape(-1, 1) # 1열을 가지는 2차원 배열로 재생성
+
+    encoder = OneHotEncoder()# 원-핫 인코딩
+    encoder.fit(np_array) # 인코딩 학습
+    labels = encoder.transform(np_array) # 새 인코딩 확인용이지만 따로 나눌 필요는 없는듯.
+    
+    print('원-핫 인코딩 데이터\n',oh_labels)
+    print(oh_labels.toarray()) #희소행렬(Sparse Matrix) 
+    print(oh_labels.shape) #희소행렬 차원
+    return labels
