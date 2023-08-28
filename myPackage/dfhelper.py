@@ -1,3 +1,10 @@
+'''
+to_number_value: (dataframe[,bool])
+        데이터 프레임을 컬럼기준으로 숫자화한다. 기존컬럼이름+"_numbering"되어서 반환된다.
+        bool은 기본적으로 False이며, 새로운 데이터 프레임을 반환한다.
+        True로 설정할 경우 기존 데이터프레임의 컬럼 옆에 붙여서 반환한다.
+        데이터프레임은 주 컬럼에 이름이 붙어있어야함.
+'''
 def to_number_value(df,add=False):
     import pandas as pd
     new_df=pd.DataFrame()
@@ -13,7 +20,10 @@ def to_number_value(df,add=False):
     if add:
         new_df=pd.concat([new_df,df],axis=1)
     return new_df
-
+'''
+normal_check: (dataframe)
+    데이터프레임이 가지는 모든 컬럼에 대해 정규성을 확인한다.
+'''
 def normal_check(df):
     for c in df.columns:
         try:
@@ -25,7 +35,11 @@ def normal_check(df):
                 print("정규성 X",normal_distribution.pvalue)
         except:
             print("문자열 등으로 인해 정규화 불가")
-        
+'''
+visualization: (dataframe,str,str[,str])
+    시각화하고 싶은 데이터 프레임과 컬럼 이름을 적는다. 
+    histo의 경우 문자열은 동작하지 않는다.   
+'''
 def visualization(df,x_name,y_name,shape='none'):
     import seaborn as sns
     import matplotlib as mpl
@@ -68,7 +82,10 @@ def visualization(df,x_name,y_name,shape='none'):
     else:
         print("bar, line, pie, histo, stem, scatter, box 중 입력")
 
-
+'''
+def many_case_ttest(df_col)
+    시리즈로 들어오는 모든 경우의 수를 리그전 형식으로 구한다
+'''
 def many_case_ttest(df_col):
     li=list(df_col.unique())
     n=[]
@@ -77,7 +94,13 @@ def many_case_ttest(df_col):
         for l in li:
             n.append(((l),(last)))
     return n
-
+'''
+ttest_auto:(user_df,col,value)
+    보페로니 교정방식의 다변량 T검정
+    user_df: 입력할 데이터프레임 이름
+    col: x축 컬럼 이름 (다변량그룹명)
+    value: y축 vlaue이름 (col기준으로 분류된 이름)
+'''
 def ttest_auto(user_df,col,value):
     #pip install statannot
     from statannot import add_stat_annotation
