@@ -11,6 +11,11 @@ def check_null(df):
     null_cnt_df = pd.DataFrame(df.isnull().sum()).rename(columns = {0:'null_count'}).reset_index()
     null_cnt_df['null_ratio'] = round(null_cnt_df['null_count']/len(df) * 100, 2)
     return null_cnt_df
+def check_null_simple(df):
+    import pandas as pd
+    null_count=df.isnull.sum()
+    return null_count/len(df)*100
+
 # 상관계수 시각화
 def heatmap(df):
     import matplotlib.pyplot as plt
