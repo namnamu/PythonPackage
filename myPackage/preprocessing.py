@@ -47,7 +47,7 @@ def onehot(array):
     encoder.fit(np_array) # 인코딩 학습
     labels = encoder.transform(np_array) # 새 인코딩 확인용이지만 따로 나눌 필요는 없는듯.
     
-    print('원-핫 인코딩 데이터\n',oh_labels)
-    print(oh_labels.toarray()) #희소행렬(Sparse Matrix) 
-    print(oh_labels.shape) #희소행렬 차원
+    # print('원-핫 인코딩 데이터\n',labels)
+    print(labels.toarray()) #희소행렬(Sparse Matrix) 
+    print(labels.shape) #희소행렬 차원
     return labels
