@@ -40,14 +40,18 @@ def flo_cate(df):
 def onehot(array):
     from sklearn.preprocessing import OneHotEncoder
     import numpy as np
+    import pandas as pd
 
     np_array = np.array(array).reshape(-1, 1) # 1열을 가지는 2차원 배열로 재생성
 
     encoder = OneHotEncoder()# 원-핫 인코딩
     encoder.fit(np_array) # 인코딩 학습
     labels = encoder.transform(np_array) # 새 인코딩 확인용이지만 따로 나눌 필요는 없는듯.
-    
+
+    # 사용법
     # print('원-핫 인코딩 데이터\n',labels)
-    print(labels.toarray()) #희소행렬(Sparse Matrix) 
-    print(labels.shape) #희소행렬 차원
-    return labels
+    # print(labels.toarray()) #희소행렬(Sparse Matrix) 
+    # print(labels.shape) #희소행렬 차원
+
+    df=pd.DataFrame(labels.toarray(),columns=array.unique())
+    return df
