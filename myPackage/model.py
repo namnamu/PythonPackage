@@ -35,3 +35,29 @@ def Decison_Tree(X,Y):
     # print('Decision Tree Confusion Matrix:','\n', matrix)
     return {"predict":y_pred,"accuracy":accuracy,"precision":precision,"recall":recall,"auc":auc,"matrix":matrix}
 
+"""
+RoC커브 시각화
+분류모델에서 matrix만 있다면 그릴 수 있다.
+"""
+def RoC(matrix):
+    from sklearn.metrics import roc_curve
+    import matplotlib.pyplot as plt
+    plt.rc('font',family='Malgun Gothic') # 한국어 표시
+    import matplotlib as mpl
+    mpl.rcParams['axes.unicode_minus']=False # -표시
+    
+    # x축과 y축을 위한 공식
+    [[tn,fp],[fn,tp]]=matrix
+    fallout=fp/(fp+tn)
+    recall=tp/(tp+fn)
+
+    fpr, tpr, thresholds = roc_curve(y_test, dt_clf.predict_proba(X_test)[:, 1])
+    print(f'{fpr=},\n{tpr=},\n{thresholds=}')
+
+    plt.plot(fpr, tpr, 'o-', label="Logistic Regression")
+    plt.plot([0, 1], [0, 1], 'k--', label="random guess")
+    plt.plot([fallout], [recall], 'ro', ms=10)
+    plt.xlabel('위양성률(Fall-Out)')
+    plt.ylabel('재현률(Recall)')
+    plt.title('Receiver operating characteristic example')
+    plt.show()

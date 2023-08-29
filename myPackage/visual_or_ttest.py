@@ -78,12 +78,12 @@ visualization: (dataframe,str,str[,str])
 '''
 def visualization(df,x_name,y_name,shape='none'):
     import seaborn as sns
-    import matplotlib as mpl
-    import matplotlib.pyplot as plt
-    plt.rc('font',family='Malgun Gothic')
     import plotly.express as px
-
-    mpl.rcParams['axes.unicode_minus']=False
+    import matplotlib.pyplot as plt
+    plt.rc('font',family='Malgun Gothic')# 한국어 표시
+    import matplotlib as mpl
+    mpl.rcParams['axes.unicode_minus']=False # -표시
+    
     x=df[x_name]
     y=df[y_name]
     
