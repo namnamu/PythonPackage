@@ -32,6 +32,18 @@ def create_model(con):
         from sklearn.neighbors import KNeighborsClassifier
         knn = KNeighborsClassifier(n_neighbors=1)
         return knn
+    elif con=="voting":
+        from sklearn.ensemble import VotingClassifier # 보팅 기법 모듈
+
+        # 개별 모델은 KNN와 DecisionTree 임.
+        knn_clf = create_model('knn')
+        dt_clf = create_model('decision_tree')
+
+        # 개별 모델을 소프트 보팅 기반의 앙상블 모델로 구현한 분류기
+        vo_clf = VotingClassifier(estimators=[('KNN',knn_clf),('DT',dt_clf)] , voting='soft' )
+        #'KNN'은 별명임.
+        
+        return vo_clf
     else:
         print("종류에러\ndecision_tree,foreset,bagging_logistic중 입력\n기본:decisionTree수행")
         from sklearn.tree import DecisionTreeClassifier
