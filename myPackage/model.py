@@ -28,6 +28,10 @@ def create_model(con):
         from sklearn.ensemble import GradientBoostingClassifier
         gb_clf = GradientBoostingClassifier(random_state=0)
         return gb_clf
+    elif con=="knn":
+        from sklearn.neighbors import KNeighborsClassifier
+        knn = KNeighborsClassifier(n_neighbors=1)
+        return knn
     else:
         print("종류에러\ndecision_tree,foreset,bagging_logistic중 입력\n기본:decisionTree수행")
         from sklearn.tree import DecisionTreeClassifier
