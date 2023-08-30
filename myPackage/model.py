@@ -34,7 +34,11 @@ def Decison_Tree(X,Y):
     # print("Decision Tree 재현율: {:.4f}".format(recall))
     # print("Decision Tree AUC: {:.4f}".format(auc))
     # print('Decision Tree Confusion Matrix:','\n', matrix)
-    return {"predict":y_pred,"accuracy":accuracy,"precision":precision,"recall":recall,"auc":auc,"matrix":matrix,'y_test':y_test,'model':dt_clf,'X_test':X_test}
+    return {"predict":y_pred,"accuracy":accuracy,"precision":precision,"recall":recall,"auc":auc,"matrix":matrix,
+            'y_test':y_test,'model':dt_clf,'X_test':X_test, "X_train": X_train , "y_train":y_train}
+
+
+
 """
 RoC커브 시각화
 분류모델에서 matrix만 있다면 그릴 수 있다.
