@@ -54,4 +54,4 @@ def onehot(array):
     # print(labels.shape) #희소행렬 차원
 
     df=pd.DataFrame(labels.toarray(),columns=array.unique())
-    return df
+    return df # 원하는 컬럼만 가지고 가서 데이터셋Y로 활용

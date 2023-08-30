@@ -17,6 +17,7 @@ def Decison_Tree(X,Y):
     # DecisionTreeClassifer 학습.
     dt_clf.fit(X_train , y_train)
 
+
     # 성능지표
     import sklearn.metrics as mt
 
@@ -33,13 +34,12 @@ def Decison_Tree(X,Y):
     # print("Decision Tree 재현율: {:.4f}".format(recall))
     # print("Decision Tree AUC: {:.4f}".format(auc))
     # print('Decision Tree Confusion Matrix:','\n', matrix)
-    return {"predict":y_pred,"accuracy":accuracy,"precision":precision,"recall":recall,"auc":auc,"matrix":matrix}
-
+    return {"predict":y_pred,"accuracy":accuracy,"precision":precision,"recall":recall,"auc":auc,"matrix":matrix,'y_test':y_test,'model':dt_clf,'X_test':X_test}
 """
 RoC커브 시각화
 분류모델에서 matrix만 있다면 그릴 수 있다.
 """
-def RoC(matrix):
+def RoC(model,matrix,X_test,y_test):
     from sklearn.metrics import roc_curve
     import matplotlib.pyplot as plt
     plt.rc('font',family='Malgun Gothic') # 한국어 표시
@@ -51,7 +51,7 @@ def RoC(matrix):
     fallout=fp/(fp+tn)
     recall=tp/(tp+fn)
 
-    fpr, tpr, thresholds = roc_curve(y_test, dt_clf.predict_proba(X_test)[:, 1])
+    fpr, tpr, thresholds = roc_curve(y_test, model.predict_proba(X_test)[:, 1])
     print(f'{fpr=},\n{tpr=},\n{thresholds=}')
 
     plt.plot(fpr, tpr, 'o-', label="Logistic Regression")
