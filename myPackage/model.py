@@ -24,6 +24,10 @@ def create_model(con):
         lr_clf = LogisticRegression(solver='liblinear') # 로지스틱 회귀가 베이스
         bagging_clf = BaggingClassifier(estimator=lr_clf) # 배깅 모델
         return bagging_clf
+    elif con=="gradient_boosting":
+        from sklearn.ensemble import GradientBoostingClassifier
+        gb_clf = GradientBoostingClassifier(random_state=0)
+        return gb_clf
     else:
         print("종류에러\ndecision_tree,foreset,bagging_logistic중 입력\n기본:decisionTree수행")
         from sklearn.tree import DecisionTreeClassifier
@@ -32,6 +36,8 @@ def create_model(con):
 
 # 머신러닝 모델(호출용)
 def model(X,Y,con='decisionTree'):
+    import time
+    start_time = time.time()
     # 데이터 셋 분리
     from sklearn.model_selection import train_test_split
     X_train , X_test , y_train , y_test = train_test_split(X, Y, test_size=0.2)# random_state=11
@@ -42,7 +48,6 @@ def model(X,Y,con='decisionTree'):
     model.fit(X_train , y_train)
     # 평가
     import sklearn.metrics as mt
-
     y_pred = model.predict(X_test) # 예측값
     accuracy = mt.accuracy_score(y_test, y_pred) #정확도
     precision = mt.precision_score(y_test, y_pred)# 정밀도
@@ -51,7 +56,8 @@ def model(X,Y,con='decisionTree'):
     matrix = mt.confusion_matrix(y_test, y_pred) # 오차행렬
 
     return {"predict":y_pred,"accuracy":accuracy,"precision":precision,"recall":recall,"auc":auc,"matrix":matrix,
-            'y_test':y_test,'model':model,'X_test':X_test, "X_train": X_train , "y_train":y_train}
+            'y_test':y_test,'model':model,'X_test':X_test, "X_train": X_train , "y_train":y_train,
+            "time":str(time.time() - start_time)}
 
 
 """
