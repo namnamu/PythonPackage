@@ -1,18 +1,34 @@
 # 모델생성(비호출용)
-def create_model(con):
-    '''
+'''
     결정트리
-    질문을 계속해서 분류할때 사용
-    (과적합이 일어나기 쉬움)
-    '''
-    if con=='decisionTree':
+질문을 계속해서 분류할때 사용
+(과적합이 일어나기 쉬움)
+    랜덤포레스트
+배깅의 알고리즘: 여러 샘플링에 대해 결정트리 수행, 예측의 최빈값
+(다양성 추가로 분산 감소, 독립성 증가, 일반화 성능 좋음)
+    배깅-로지스틱 회귀를 분류로 사용
+배깅의 모델 1개,샘플링 여러개의 모델에 로지스틱 회귀를 사용한것
+'''
+def create_model(con):
+    if con=='decision_tree':
         from sklearn.tree import DecisionTreeClassifier
         dt_clf = DecisionTreeClassifier(random_state=156)
         return dt_clf
-    else:
+    elif con=='foreset':
         from sklearn.ensemble import RandomForestClassifier
         rf_clf = RandomForestClassifier(n_estimators=100, random_state=0, max_depth=8)
         return rf_clf
+    elif con=='bagging_logistic':
+        from sklearn.ensemble import BaggingClassifier
+        from sklearn.linear_model import LogisticRegression
+        lr_clf = LogisticRegression(solver='liblinear') # 로지스틱 회귀가 베이스
+        bagging_clf = BaggingClassifier(estimator=lr_clf) # 배깅 모델
+        return bagging_clf
+    else:
+        print("종류에러\ndecision_tree,foreset,bagging_logistic중 입력\n기본:decisionTree수행")
+        from sklearn.tree import DecisionTreeClassifier
+        dt_clf = DecisionTreeClassifier(random_state=156)
+        return dt_clf
 
 # 머신러닝 모델(호출용)
 def model(X,Y,con='decisionTree'):
