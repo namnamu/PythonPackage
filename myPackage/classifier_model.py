@@ -9,7 +9,7 @@
     배깅-로지스틱 회귀를 분류로 사용
 배깅의 모델 1개,샘플링 여러개의 모델에 로지스틱 회귀를 사용한것
 '''
-def create_model(con):
+def create_classifier_model(con):
     if con=='decision_tree':
         from sklearn.tree import DecisionTreeClassifier
         dt_clf = DecisionTreeClassifier(random_state=156)
@@ -51,7 +51,7 @@ def create_model(con):
         return dt_clf
 
 # 머신러닝 모델(호출용)
-def model(X,Y,con='decisionTree'):
+def classifier(X,Y,con='decisionTree'):
     import time
     start_time = time.time()
     # 데이터 셋 분리
@@ -59,7 +59,7 @@ def model(X,Y,con='decisionTree'):
     X_train , X_test , y_train , y_test = train_test_split(X, Y, test_size=0.2)# random_state=11
     
     # 생성
-    model=create_model(con)
+    model=create_classifier_model(con)
     # 학습
     model.fit(X_train , y_train)
     # 평가
