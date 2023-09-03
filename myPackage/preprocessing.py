@@ -36,7 +36,9 @@ def flo_cate(df):
         else:
             cate_li.append(col)
     return flo_li, cate_li
+
 # 컬럼형 라벨링(우위관계가 없을 때 사용, 50개가 넘으면 쓰지 말 것.)
+# 바꾸고 싶은 배열만 들어올 것.
 def onehot(array):
     from sklearn.preprocessing import OneHotEncoder
     import numpy as np
@@ -55,3 +57,11 @@ def onehot(array):
 
     df=pd.DataFrame(labels.toarray(),columns=array.unique())
     return df # 원하는 컬럼만 가지고 가서 데이터셋Y로 활용
+
+# 날짜 라벨 인코딩(만들어지는 순서가 영향을 받을 수도 있음.)
+# 바꾸고 싶은 배열만 들어올 것.
+def label_encoding(array):
+    from sklearn.preprocessing import LabelEncoder
+    encoder = LabelEncoder()
+    encoder.fit(array)
+    return encoder.transform(array)
