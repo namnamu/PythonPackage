@@ -44,6 +44,13 @@ def create_classifier_model(con):
         #'KNN'은 별명임.
         
         return vo_clf
+    elif con=="linear":
+        # 로지스틱 회귀와 소프트맥스 회귀
+        # 클래스 분류가 2개가 넘으면 자동으로 소프트맥스 회귀가 적용됨.
+        from sklearn.linear_model import LogisticRegression
+
+        log_reg = LogisticRegression(C=30)# C=30은 약한 규제의 의미
+        return log_reg
     else:
         print("종류에러\ndecision_tree,foreset,bagging_logistic중 입력\n기본:decisionTree수행")
         from sklearn.tree import DecisionTreeClassifier
@@ -70,6 +77,13 @@ def classifier(X,Y,con='decisionTree'):
     recall = mt.recall_score(y_test, y_pred)# 재현율
     auc = mt.roc_auc_score(y_test, y_pred) #auc너비. 보고할때는 항상 auc로
     matrix = mt.confusion_matrix(y_test, y_pred) # 오차행렬
+
+    if con=="linear":
+         # #결정 경계 확인
+        # X_new = np.linspace(0, 3, 1000).reshape(-1, 1)  # X의 최소와 최대지만, 꼭 그렇게 한정한 것은 아니고 크게 둘른 모양, 중앙값을 확실히 알기 위해서 
+        # y_proba = log_reg.predict_proba(X_new) # 정답일 확률/오답일 확률
+        # decision_boundary = X_new[y_proba[:, 1] >= 0.5][0, 0] #결정경계 0.5보다 높은 버지니카 클래스중 첫번째(경계선)를 가지고 오는 것이다.
+        
 
     return {"predict":y_pred,"accuracy":accuracy,"precision":precision,"recall":recall,"auc":auc,"matrix":matrix,
             'y_test':y_test,'model':model,'X_test':X_test, "X_train": X_train , "y_train":y_train,
