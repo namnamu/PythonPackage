@@ -13,7 +13,7 @@ def check_null(df):
     return null_cnt_df
 def check_null_simple(df):
     import pandas as pd
-    null_count=df.isnull.sum()
+    null_count=df.isnull().sum()
     return null_count/len(df)*100
 
 # 상관계수 시각화
@@ -40,6 +40,7 @@ def flo_cate(df):
 # 컬럼형 라벨링(우위관계가 없을 때 사용, 50개가 넘으면 쓰지 말 것.)
 # 바꾸고 싶은 배열만 들어올 것.
 def onehot(array):
+    # 판다스일때는 이거 안쓰고 pd.get_dummies(df, columns=['A컬럼', 'B컬럼', 'C컬럼', '컬럼명...'])하면 각 컬럼들마다 알아서 인코딩된다.
     from sklearn.preprocessing import OneHotEncoder
     import numpy as np
     import pandas as pd
