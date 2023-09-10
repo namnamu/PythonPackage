@@ -6,10 +6,20 @@
     랜덤포레스트
 배깅의 알고리즘: 여러 샘플링에 대해 결정트리 수행, 예측의 최빈값
 (다양성 추가로 분산 감소, 독립성 증가, 일반화 성능 좋음)
-    배깅-로지스틱 회귀를 분류로 사용
-배깅의 모델 1개,샘플링 여러개의 모델에 로지스틱 회귀를 사용한것
-    부스팅
-하나의 모델을 거치고 나서 나온 결과를 다른 모델에 또 넣는것(?)
+    앙상블
+편향과 분산을 줄인 모델=분류기 여러개 사용
+    1) 보팅
+    여러 분류기(다른 알고리즘)에 넣어 투표로 최종 예측 결과를 선정
+    - 하드 보팅: 다수의 모델이 낸 결과로 선정
+    - 소프트 보팅: 각 클래스들이 예측한 확률을 총 정리
+    2) 배깅-로지스틱 회귀를 분류로 사용
+    데이터 샘플링 무작위로 예측값들의 최빈값을 최종 예측값으로 선정
+    - 로지스틱: 배깅의 모델 1개,샘플링 여러개의 모델에 로지스틱 회귀를 사용한것
+    - 스태킹: 여러 모델에 넣는다. 각 모델 예측값에 대해 새로운 학습 데이터로 정리해 학습시킨다.
+    3) 부스팅
+    앞의 분류기가 가중치를 부여하여 다음 분류기에 전달해 개선해 나간다.
+    - 에이다부스트: 가중치부여
+    - 그래디언트부스팅: 오차보정. 예측값과 실제값을 비교해 새로 학습
     knn
 거리에 따라 가까운대로 분류
 '''
@@ -31,11 +41,11 @@ def create_classifier_model(con):
         lr_clf = LogisticRegression(solver='liblinear') # 로지스틱 회귀가 베이스
         bagging_clf = BaggingClassifier(estimator=lr_clf) # 배깅 모델
         return bagging_clf
-    elif con=="gradient_boosting":
+    elif con=="gradient_boosting":# GBM
         from sklearn.ensemble import GradientBoostingClassifier
         gb_clf = GradientBoostingClassifier(random_state=0)
         return gb_clf
-    elif con=="knn": # 클래스 여러개가 안돼
+    elif con=="knn":
         from sklearn.neighbors import KNeighborsClassifier
         knn = KNeighborsClassifier(n_neighbors=1)
         return knn
