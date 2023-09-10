@@ -66,3 +66,16 @@ def label_encoding(array):
     encoder = LabelEncoder()
     encoder.fit(array)
     return encoder.transform(array)
+
+
+# 스탠다드 스케일링 : 평균 0, 분산이 1인 정규분포
+""" 데이터 왜곡이라는 비판을 받는다."""
+def standard_scaling(X): # pandas여도 되고, 2차원 배열도 된다.
+    from sklearn.preprocessing import StandardScaler
+    return StandardScaler().fit_transform(X) # numpy ndarry로 반환 
+# 민맥스 스케일링 : 데이터를 0과 1사이의 값으로 축소
+""" 데이터가 한쪽으로 쏠리는 현상이 발생한다. """
+def minmax_scaling(X):
+    from sklearn.preprocessing import MinMaxScaler
+    return MinMaxScaler().fit_transform(X) # numpy ndarry로 반환 
+
