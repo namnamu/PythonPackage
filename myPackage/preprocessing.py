@@ -78,4 +78,30 @@ def standard_scaling(X): # pandas여도 되고, 2차원 배열도 된다.
 def minmax_scaling(X):
     from sklearn.preprocessing import MinMaxScaler
     return MinMaxScaler().fit_transform(X) # numpy ndarry로 반환 
+# 차원축소 PCA: 주성분 분석. 
+# 매 number만큼 분산이 가장 큰 방향(주성분)으로 사영한다.
+def dimension_reduction_pca(X,number):
+    # Target 값을 제외한 모든 속성 값을 StandardScaler를 이용하여 표준 정규 분포를 가지는 값들로 변환
+    # PCA는 여러 속성의 값을 연산해야 하므로 속성의 스케일에 영향을 받는다.
+    # 따라서, PCA로 압축하기 전에 각 속성값을 동일한 스케일로 변환하는 것이 필요
+    scaled=standard_scaling(X)
 
+    from sklearn.decomposition import PCA
+    pca = PCA(n_components=number)# 몇차원으로 줄일 것인지
+    done= pca.fit_transform(scaled) # numpy ndarry로 반환 
+    print("각 PCA Component별 변동성 비율:",pca.explained_variance_ratio_)
+    return done
+# 차원축소 LDA: 입력 데이터의 변동성이 가장 큰 축
+# 분류에 최적화되어있다.
+def dimension_reduction_lda(X,y,number):
+    # 스케일링 필요
+    scaled=standard_scaling(X)
+
+    from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+    lda = LinearDiscriminantAnalysis(n_components=number)
+    # fit()호출 시 target값 입력
+    lda.fit(scaled, y)
+    done = lda.transform(scaled)
+    print("각 LDA Component별 변동성 비율:",lda.explained_variance_ratio_)
+    return done
+    
