@@ -90,20 +90,24 @@ def classifier(X,Y,con='decisionTree'):
     import sklearn.metrics as mt
     y_pred = model.predict(X_test) # 예측값
     y_proba = model.predict_proba(X_test) # 각 클래스에 대한 확률값
-    accuracy = mt.accuracy_score(y_test, y_pred) #정확도
-    precision = mt.precision_score(y_test, y_pred)# 정밀도
-    recall = mt.recall_score(y_test, y_pred)# 재현율
-    auc = mt.roc_auc_score(y_test, y_pred) #auc너비. 보고할때는 항상 auc로
-    matrix = mt.confusion_matrix(y_test, y_pred) # 오차행렬
 
-    decision_boundary='only linear(maybe...)'
-    if con=="linear":
-        import numpy as np
-        #결정 경계 확인
-        X_new = np.linspace(0, 3, 1000).reshape(-1, X.shape[1])  # X의 최소와 최대지만, 꼭 그렇게 한정한 것은 아니고 크게 둘른 모양, 중앙값을 확실히 알기 위해서 
-        y_proba = model.predict_proba(X_new) # 정답일 확률/오답일 확률
-        decision_boundary = X_new[y_proba[:, 1] >= 0.5][0, 0] # 첫 클래스의 분류경계. 이진분류시, 0과 1을 나누는 중간 값.
-        
+    matrix = mt.confusion_matrix(y_test, y_pred) # 오차행렬
+    accuracy = mt.accuracy_score(y_test, y_pred) #정확도
+    precision='only binary classifier'
+    recall='only binary classifier'
+    auc='only binary classifier'
+    decision_boundary='only binary linear'
+    if len(y.unique())<3:
+        precision = mt.precision_score(y_test, y_pred)# 정밀도
+        recall = mt.recall_score(y_test, y_pred)# 재현율
+        auc = mt.roc_auc_score(y_test, y_pred) #auc너비. 보고할때는 항상 auc로
+        if con=="linear":
+            import numpy as np
+            #결정 경계 확인
+            X_new = np.linspace(0, 3, 1000).reshape(-1, X.shape[1])  # X의 최소와 최대지만, 꼭 그렇게 한정한 것은 아니고 크게 둘른 모양, 중앙값을 확실히 알기 위해서 
+            y_proba = model.predict_proba(X_new) # 정답일 확률/오답일 확률
+            decision_boundary = X_new[y_proba[:, 1] >= 0.5][0, 0] # 첫 클래스의 분류경계. 이진분류시, 0과 1을 나누는 중간 값.
+  
 
     return {"predict":y_pred,"accuracy":accuracy,"precision":precision,"recall":recall,"auc":auc,"matrix":matrix,
             'y_test':y_test,'model':model,'X_test':X_test, "X_train": X_train , "y_train":y_train,
