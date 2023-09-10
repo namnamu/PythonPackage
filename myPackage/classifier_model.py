@@ -8,15 +8,22 @@
 (다양성 추가로 분산 감소, 독립성 증가, 일반화 성능 좋음)
     배깅-로지스틱 회귀를 분류로 사용
 배깅의 모델 1개,샘플링 여러개의 모델에 로지스틱 회귀를 사용한것
+    부스팅
+하나의 모델을 거치고 나서 나온 결과를 다른 모델에 또 넣는것(?)
+    knn
+거리에 따라 가까운대로 분류
 '''
 def create_classifier_model(con):
     if con=='decision_tree':
         from sklearn.tree import DecisionTreeClassifier
         dt_clf = DecisionTreeClassifier(random_state=156)
+        # dt_clf.feature_importances_로 어느 요소가 영향을 제일 많이 끼쳤는지 확인가능
         return dt_clf
-    elif con=='foreset':
+    elif con=='forest':
         from sklearn.ensemble import RandomForestClassifier
         rf_clf = RandomForestClassifier(n_estimators=100, random_state=0, max_depth=8)
+        # rf_clf.feature_importances_로 어느 요소가 영향을 제일 많이 끼쳤는지 확인가능
+
         return rf_clf
     elif con=='bagging_logistic':
         from sklearn.ensemble import BaggingClassifier
@@ -28,7 +35,7 @@ def create_classifier_model(con):
         from sklearn.ensemble import GradientBoostingClassifier
         gb_clf = GradientBoostingClassifier(random_state=0)
         return gb_clf
-    elif con=="knn":
+    elif con=="knn": # 클래스 여러개가 안돼
         from sklearn.neighbors import KNeighborsClassifier
         knn = KNeighborsClassifier(n_neighbors=1)
         return knn
@@ -36,8 +43,8 @@ def create_classifier_model(con):
         from sklearn.ensemble import VotingClassifier # 보팅 기법 모듈
 
         # 개별 모델은 KNN와 DecisionTree 임.
-        knn_clf = create_model('knn')
-        dt_clf = create_model('decision_tree')
+        knn_clf = create_classifier_model('knn')
+        dt_clf = create_classifier_model('decision_tree')
 
         # 개별 모델을 소프트 보팅 기반의 앙상블 모델로 구현한 분류기
         vo_clf = VotingClassifier(estimators=[('KNN',knn_clf),('DT',dt_clf)] , voting='soft' )
@@ -52,7 +59,7 @@ def create_classifier_model(con):
         log_reg = LogisticRegression(C=30)# C=30은 약한 규제의 의미
         return log_reg
     else:
-        print("종류에러\ndecision_tree,foreset,bagging_logistic중 입력\n기본:decisionTree수행")
+        print("종류에러\ndecision_tree,forest,bagging_logistic,gradient_boosting,knn,voting,linear중 입력\n기본:decisionTree수행")
         from sklearn.tree import DecisionTreeClassifier
         dt_clf = DecisionTreeClassifier(random_state=156)
         return dt_clf
@@ -72,22 +79,25 @@ def classifier(X,Y,con='decisionTree'):
     # 평가
     import sklearn.metrics as mt
     y_pred = model.predict(X_test) # 예측값
+    y_proba = model.predict_proba(X_test) # 각 클래스에 대한 확률값
     accuracy = mt.accuracy_score(y_test, y_pred) #정확도
     precision = mt.precision_score(y_test, y_pred)# 정밀도
     recall = mt.recall_score(y_test, y_pred)# 재현율
     auc = mt.roc_auc_score(y_test, y_pred) #auc너비. 보고할때는 항상 auc로
     matrix = mt.confusion_matrix(y_test, y_pred) # 오차행렬
 
+    decision_boundary='only linear(maybe...)'
     if con=="linear":
-         # #결정 경계 확인
-        # X_new = np.linspace(0, 3, 1000).reshape(-1, 1)  # X의 최소와 최대지만, 꼭 그렇게 한정한 것은 아니고 크게 둘른 모양, 중앙값을 확실히 알기 위해서 
-        # y_proba = log_reg.predict_proba(X_new) # 정답일 확률/오답일 확률
-        # decision_boundary = X_new[y_proba[:, 1] >= 0.5][0, 0] #결정경계 0.5보다 높은 버지니카 클래스중 첫번째(경계선)를 가지고 오는 것이다.
+        import numpy as np
+        #결정 경계 확인
+        X_new = np.linspace(0, 3, 1000).reshape(-1, X.shape[1])  # X의 최소와 최대지만, 꼭 그렇게 한정한 것은 아니고 크게 둘른 모양, 중앙값을 확실히 알기 위해서 
+        y_proba = model.predict_proba(X_new) # 정답일 확률/오답일 확률
+        decision_boundary = X_new[y_proba[:, 1] >= 0.5][0, 0] # 첫 클래스의 분류경계. 이진분류시, 0과 1을 나누는 중간 값.
         
 
     return {"predict":y_pred,"accuracy":accuracy,"precision":precision,"recall":recall,"auc":auc,"matrix":matrix,
             'y_test':y_test,'model':model,'X_test':X_test, "X_train": X_train , "y_train":y_train,
-            "time":str(time.time() - start_time)}
+            "time":str(time.time() - start_time), 'y_proba':y_proba,'decision_boundary':decision_boundary}
 
 
 """
